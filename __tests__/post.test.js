@@ -110,4 +110,19 @@ describe('post routes', () => {
 
     expect(res.body.caption).not.toEqual('Summer Time!');
   });
+
+  test('deletes a post via DELETE', async() => {
+    const post = await Post.create({
+      userId: '1',
+      photoUrl: 'giant rubber ducky in a pool',
+      caption: 'Pool Party',
+      tags: ['pool', 'party', 'duck']
+    });
+
+    const res = await agent
+      .delete(`/api/v1/posts/${post.id}`)
+      .send(post);
+
+    expect(res.body).toEqual(post);
+  });
 });
