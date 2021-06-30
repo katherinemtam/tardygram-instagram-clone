@@ -3,6 +3,7 @@ import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
 import UserService from '../lib/services/UserServices.js';
+import Post from '../lib/models/Post.js';
 
 const agent = request.agent(app);
 
@@ -31,7 +32,7 @@ describe('post routes', () => {
     return user;
   });
 
-  test.only('creates a post via POST', async () => {
+  test('creates a post via POST', async () => {
     const res = await agent
       .post('/api/v1/posts')
       .send({
@@ -48,5 +49,26 @@ describe('post routes', () => {
       caption: 'Happy Doggo Day!',
       tags: ['cute', 'doggo', 'pupper']
     });
+  });
+
+  test('gets all posts', async() => {
+    const firstPost = await Post.create({
+      userId: '1',
+      photoUrl: 'cute dog picture',
+      caption: 'Happy Doggo Day!',
+      tags: ['cute', 'doggo', 'pupper']
+    });
+
+    const secondPost = await Post.create({
+      userId: '1',
+      photoUrl: 'beach photo',
+      caption: 'Summer Time!',
+      tags: ['summer', 'hot', 'beach']
+    });
+    
+    const res = await agent
+      .get('/api/v1/posts');
+
+    expect(res.body).toEqual([firstPost, secondPost]);
   });
 });
