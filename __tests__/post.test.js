@@ -28,8 +28,6 @@ describe('post routes', () => {
         password: 'password',
         profilePhotoUrl: 'profilephoto.url'
       });
-
-    return user;
   });
 
   test('creates a post via POST', async () => {
