@@ -51,7 +51,7 @@ describe('post routes', () => {
     });
   });
 
-  test('gets all posts via POST', async() => {
+  test('gets all posts via GET', async() => {
     const firstPost = await Post.create({
       userId: '1',
       photoUrl: 'cute dog picture',
@@ -72,7 +72,7 @@ describe('post routes', () => {
     expect(res.body).toEqual([firstPost, secondPost]);
   });
 
-  test('gets a post via POST', async() => {
+  test('gets a post via GET', async() => {
     const post = await Post.create({
       userId: '1',
       photoUrl: 'beach photo',
@@ -84,5 +84,30 @@ describe('post routes', () => {
       .get(`/api/v1/posts/${post.id}`);
     
     expect(res.body).toEqual(post);
+  });
+
+  test('updates a post via PATCH', async() => {
+    const post = await Post.create({
+      userId: '1',
+      photoUrl: 'beach photo',
+      caption: 'Summer Time!',
+      tags: ['summer', 'hot', 'beach']
+    });
+
+    post.caption = 'Sun\'s out, buns out!';
+
+    const res = await agent
+      .patch(`/api/v1/posts/${post.id}`)
+      .send({ caption: 'Sun\'s out, buns out!' });
+
+    expect(res.body).toEqual({
+      id: '1',
+      userId: '1',
+      photoUrl: 'beach photo',
+      caption: 'Sun\'s out, buns out!',
+      tags: ['summer', 'hot', 'beach']
+    });
+
+    expect(res.body.caption).not.toEqual('Summer Time!');
   });
 });
