@@ -13,14 +13,14 @@ describe('auth routes', () => {
     const res = await request(app)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'test@test.com',
+        username: 'test',
         password: 'password',
         profilePhotoUrl: 'profilephoto.url'
       });
 
     expect(res.body).toEqual({
       id: '1',
-      email: 'test@test.com',
+      username: 'test',
       profilePhotoUrl: 'profilephoto.url'
     });
   });
@@ -29,14 +29,14 @@ describe('auth routes', () => {
     const res = await request(app)
       .post('/api/v1/auth/login')
       .send({
-        email: 'test@test.com',
+        username: 'test',
         password: 'password',
         profilePhotoUrl: 'profilephoto.url'
       });
 
     expect(res.body).toEqual({
       id: '1',
-      email: 'test@test.com',
+      username: 'test',
       profilePhotoUrl: 'profilephoto.url'
     });
   });
@@ -44,7 +44,7 @@ describe('auth routes', () => {
   test('verifies a user is logged in', async() => {
     const agent = request.agent(app);
     const user = await UserService.create({
-      email: 'hello@jello.com',
+      username: 'hello',
       password: 'ahoy',
       profilePhotoUrl: 'jellybean'
     });
@@ -52,7 +52,7 @@ describe('auth routes', () => {
     await agent
       .post('/api/v1/auth/login')
       .send({
-        email: 'hello@jello.com',
+        username: 'hello',
         password: 'ahoy',
         profilePhotoUrl: 'jellybean'
       });
@@ -62,7 +62,7 @@ describe('auth routes', () => {
 
     expect(res.body).toEqual({
       id: user.id,
-      email: 'hello@jello.com',
+      username: 'hello',
       passwordHash: expect.any(String),
       profilePhotoUrl: 'jellybean',
       iat: expect.any(Number),

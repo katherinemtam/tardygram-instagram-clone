@@ -15,7 +15,7 @@ describe('post routes', () => {
 
     //create user
     user = await UserService.create({
-      email: 'test@test.com',
+      username: 'test',
       password: 'password',
       profilePhotoUrl: 'profilephoto.url'
     });
@@ -24,7 +24,7 @@ describe('post routes', () => {
     await agent
       .post('/api/v1/auth/login')
       .send({
-        email: 'test@test.com',
+        username: 'test',
         password: 'password',
         profilePhotoUrl: 'profilephoto.url'
       });

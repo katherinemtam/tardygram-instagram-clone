@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS comments;
 
 CREATE TABLE users (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  email TEXT NOT NULL UNIQUE,
+  username TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
   profile_photo_url TEXT 
 );
