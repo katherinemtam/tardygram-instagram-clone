@@ -51,7 +51,7 @@ describe('post routes', () => {
     });
   });
 
-  test('gets all posts', async() => {
+  test('gets all posts via POST', async() => {
     const firstPost = await Post.create({
       userId: '1',
       photoUrl: 'cute dog picture',
@@ -70,5 +70,19 @@ describe('post routes', () => {
       .get('/api/v1/posts');
 
     expect(res.body).toEqual([firstPost, secondPost]);
+  });
+
+  test('gets a post via POST', async() => {
+    const post = await Post.create({
+      userId: '1',
+      photoUrl: 'beach photo',
+      caption: 'Summer Time!',
+      tags: ['summer', 'hot', 'beach']
+    });
+
+    const res = await agent
+      .get(`/api/v1/posts/${post.id}`);
+    
+    expect(res.body).toEqual(post);
   });
 });
