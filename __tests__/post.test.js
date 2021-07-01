@@ -85,10 +85,18 @@ describe('post routes', () => {
       comment: 'Look at this comment!'
     });
 
+    await Comment.create({
+      commentBy: user.id,
+      postId: post.id,
+      comment: 'Wow! Another comment!'
+    });
+
     const res = await agent
       .get(`/api/v1/posts/${post.id}`);
     
-    expect(res.body).toEqual({ ...post, comments: 'Look at this comment!' });
+    expect(res.body).toEqual({
+      ...post, comments: ['Look at this comment!', 'Wow! Another comment!'] 
+    });
   });
 
   test('updates a post via PATCH', async() => {
@@ -345,9 +353,6 @@ describe('post routes', () => {
 
     const res = await agent
       .get('/api/v1/posts/popular');
-
-  
-    console.log(res.body);
 
     expect(res.body).toEqual(expect.arrayContaining([post1, post2, post4, post3, post5, post6, post9, post7, post8, post12]));
   });
