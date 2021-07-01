@@ -88,7 +88,7 @@ describe('post routes', () => {
     const res = await agent
       .get(`/api/v1/posts/${post.id}`);
     
-    expect(res.body).toEqual(post);
+    expect(res.body).toEqual({ ...post, comments: 'Look at this comment!' });
   });
 
   test('updates a post via PATCH', async() => {
