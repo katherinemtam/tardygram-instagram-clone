@@ -4,6 +4,7 @@ import request from 'supertest';
 import app from '../lib/app.js';
 import UserService from '../lib/services/UserServices.js';
 import Post from '../lib/models/Post.js';
+import Comment from '../lib/models/Comment.js';
 
 const agent = request.agent(app);
 
@@ -70,12 +71,18 @@ describe('post routes', () => {
     expect(res.body).toEqual([firstPost, secondPost]);
   });
 
-  test('gets a post via GET', async() => {
+  test.only('gets a post via GET', async() => {
     const post = await Post.create({
-      userId: '1',
+      userId: user.id,
       photoUrl: 'beach photo',
       caption: 'Summer Time!',
       tags: ['summer', 'hot', 'beach']
+    });
+
+    await Comment.create({
+      commentBy: user.id,
+      postId: post.id,
+      comment: 'Look at this comment!'
     });
 
     const res = await agent
@@ -124,3 +131,4 @@ describe('post routes', () => {
     expect(res.body).toEqual(post);
   });
 });
+
